@@ -1,0 +1,84 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class CLI {
+    -virtualFileSystem: VirtualFileSystem
+    -commandParser: CommandParser
+    +executeCommand(command: String): void
+}
+
+CLI --> VirtualFileSystem
+CLI --> CommandParser
+CLI --> Command
+
+class VirtualFileSystem {
+    -root: Directory
+    +getRoot(): Directory
+    +createDirectory(path: String): void
+    +createFile(path: String): void
+    +remove(path: String): void
+    +listChildren(path: String): void
+    +moveTo(path: String): void
+    +getActualPath(): String
+}
+
+VirtualFileSystem --> Directory
+
+class CommandParser {
+    -command: Map<String, Command>
+    +parse(input: String): Command
+}
+
+CommandParser --> Command
+
+interface Command {
+    +execute(): void
+}
+
+class CreateFileCommand implements Command {
+    +execute(): void
+}
+
+class CreateDirectoryCommand implements Command {
+    +execute(): void
+}
+
+class DeleteCommand implements Command {
+    +execute(): void
+}
+
+class ListCommand implements Command {
+    +execute(): void
+}
+
+class MoveCommand implements Command {
+    +execute(): void
+}
+
+class PwdCommand implements Command {
+    +execute(): void
+}
+
+interface Node {
+    +getName(): String
+}
+
+class Directory implements Node {
+    -name: String
+    -children: List<Node>
+    -parent: Directory
+    +getName(): String
+    +addChild(node: Node): void
+    +removeChild(node: Node): void
+    +getChild(index: int): Node
+    +list(): List<String>
+}
+
+Directory *-- Node
+
+class File implements Node {
+    -name: String
+    +getName(): String
+}
+
+@enduml

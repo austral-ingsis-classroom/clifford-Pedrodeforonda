@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant User
+participant CLI
+participant CommandParser
+participant CreateFileCommand
+participant VirtualFileSystem
+participant Directory
+participant File
+
+User -> CLI: executeCommand("touch ciclon.txt")
+CLI -> CommandParser: parse("touch ciclon.txt")
+CommandParser --> CLI: return CreateFileCommand
+CLI -> CreateFileCommand: execute()
+CreateFileCommand -> VirtualFileSystem: createFile("ciclon.txt")
+VirtualFileSystem -> Directory: addChild(File)
+Directory --> VirtualFileSystem: return
+VirtualFileSystem --> CreateFileCommand: return
+CreateFileCommand --> CLI: return
+CLI --> User: "'ciclon.txt' file created"
+
+@enduml
